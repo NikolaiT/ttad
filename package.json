@@ -1,0 +1,31 @@
+{
+  "name": "ttad",
+  "version": "1.0.0",
+  "description": "Node library that extracts Text Title Author and Date from a Url",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NikolaiT/ttad.git"
+  },
+  "keywords": [
+    "Extractor",
+    "Text",
+    "Title",
+    "Author",
+    "Date"
+  ],
+  "author": "Nikolai Tschacher",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NikolaiT/ttad/issues"
+  },
+  "homepage": "https://github.com/NikolaiT/ttad#readme",
+  "dependencies": {
+    "jsdom": "^13.2.0",
+    "puppeteer": "^1.12.2",
+    "unfluff": "^3.2.0"
+  }
+}
