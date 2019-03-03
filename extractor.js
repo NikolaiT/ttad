@@ -44,25 +44,27 @@ function extractFromStr(s) {
     return resultObj;
 }
 
-async function extractContentFromUrl(page, url) {
+async function extractContentFromUrl(page, url, debug=true) {
     let resultObj = {
         text: '',
         title: '',
         author: '',
         date: '',
+        url: url,
     };
 
-    console.log(`\tTrying to extract content from url ${url}`);
+    if (debug) console.log(`\tTrying to extract content from url ${url}`);
 
     try {
-        await page.goto(url, {timeout: 30000});
+        await page.goto(url, {waitUntil: 'networkidle2', timeout: 30000});
+        if (debug) console.log(`\tPage loaded.`);
     } catch (e) {
         console.error(`\tcould not load url ${url}. Trying nevertheless to grab contents: ${e.message}`);
     }
 
     try {
-        await sleep(300);
         var html_data = await page.content();
+        if (debug) console.log(`\tFetched page content.`);
     } catch(e) {
         console.error('cannot fetch html contents. abort.');
         return resultObj;

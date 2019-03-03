@@ -3,6 +3,7 @@ const extractor = require('./extractor');
 module.exports = {
     extract_from_str: extract_from_str,
     extract_from_url: extract_from_urls,
+    _extract_from_urls: _extract_from_urls,
 };
 
 function extract_from_str(s) {
@@ -47,36 +48,51 @@ async function extract_from_urls(urls, config) {
         args: browserArgs,
         ignoreHTTPSErrors: true,
     });
-    const page = await browser.newPage();
 
-    if (extractionConfig.evadeDetection) {
-        await evadeChromeHeadlessDetection(page);
-    }
-
-    // block some assets to speed up scraping
-    if (extractionConfig.interceptRequests) {
-        await page.setRequestInterception(true);
-        page.on('request', (req) => {
-            let type = req.resourceType();
-            const block = extractionConfig.interceptRequests;
-            if (block.includes(type)) {
-                req.abort();
-            } else {
-                req.continue();
-            }
-        });
-    }
-
-    let results = [];
-
-    while (urls.length) {
-        let url = urls.shift();
-        results.push(await extractor.extractContentFromUrl(page, url))
-    }
+    let res = await _extract_from_urls(browser, extractionConfig, urls);
 
     await browser.close();
 
-    return results;
+    return res.results;
+}
+
+
+async function _extract_from_urls(browser, extractionConfig, urls) {
+
+    let num_requests = urls.length;
+    let results = [];
+
+    for (var url of urls) {
+        let page = await browser.newPage();
+
+        if (extractionConfig.evadeDetection) {
+            await evadeChromeHeadlessDetection(page);
+        }
+
+        // block some assets to speed up scraping
+        if (extractionConfig.interceptRequests) {
+            await page.setRequestInterception(true);
+            page.on('request', (req) => {
+                let type = req.resourceType();
+                const block = extractionConfig.interceptRequests;
+                if (block.includes(type)) {
+                    req.abort();
+                } else {
+                    req.continue();
+                }
+            });
+        }
+
+        let res = await extractor.extractContentFromUrl(page, url);
+        results.push(res);
+
+        await page.close();
+    }
+
+    return {
+        results: results,
+        num_requests: num_requests,
+    };
 }
 
 // This is where we'll put the code to get around the tests.

@@ -1,5 +1,9 @@
 # ttad - Text Title Author Date Extractor
 
+[![npm](https://img.shields.io/npm/v/ttad.svg?style=for-the-badge)](https://www.npmjs.com/package/ttad)
+[![Donate](https://img.shields.io/badge/donate-paypal-blue.svg?style=for-the-badge)](https://www.paypal.me/incolumitas)
+[![Known Vulnerabilities](https://snyk.io/test/github/NikolaiT/ttad/badge.svg)](https://snyk.io/test/github/NikolaiT/ttad)
+
 This Node module extracts a single piece of
 
 1. Text - t

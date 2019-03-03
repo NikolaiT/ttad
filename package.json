@@ -1,6 +1,6 @@
 {
   "name": "ttad",
-  "version": "1.0.0",
+  "version": "1.0.9",
   "description": "Node library that extracts Text Title Author and Date from a Url",
   "main": "index.js",
   "scripts": {
